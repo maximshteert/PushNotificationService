@@ -12,6 +12,10 @@ import org.haxe.extension.PNSFirebaseInstanceIDService;
 
 import java.lang.String;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.*;
+import org.haxe.extension.extensionkit.Trace;
+
 
 /* 
 	You can use the Android Extension class in order to hook
@@ -41,7 +45,7 @@ import java.lang.String;
 */
 public class PushNotificationService extends Extension {
 	
-	
+	public static FirebaseApp firebaseApp = null;
 	public static int sampleMethod (int inputValue) {
 		
 		return inputValue * 100;
@@ -65,9 +69,39 @@ public class PushNotificationService extends Extension {
 	 * Called when the activity is starting.
 	 */
 	public void onCreate (Bundle savedInstanceState) {
-		
-		
-		
+		Trace.Error("oncreate pns");
+
+		FirebaseOptions.Builder firebaseBuilder = new FirebaseOptions.Builder();
+		firebaseBuilder.setApiKey("AIzaSyBXSAK0oBZjuX8JYWxlxP6sm1jG0JMenGo");
+		firebaseBuilder.setApplicationId("1:60691401087:android:739aed522d2d96b5");
+		firebaseBuilder.setDatabaseUrl("https://clover-2b677.firebaseio.com");
+		firebaseBuilder.setGcmSenderId("60691401087");
+		firebaseBuilder.setStorageBucket("clover-2b677.appspot.com");
+
+		firebaseApp = FirebaseApp.initializeApp(mainContext, firebaseBuilder.build());
+
+		if (firebaseApp == null) {
+			Trace.Error("firebaseApp IS NULL");
+		} else {
+			Trace.Error("firebaseApp IS NOT NULL");
+		}
+
+		String t = PNSFirebaseInstanceIDService.getPushID(firebaseApp);
+
+		if (t == null) {
+			Trace.Error("token IS NULL");
+		} else {
+			Trace.Error("token IS NOT NULL");
+		}
+
+//		PNSFirebaseInstanceIDService pnsFIIDS = new PNSFirebaseInstanceIDService();
+//		String t = pnsFIIDS.getPushID(firebaseApp).toString();
+//		Trace.Error("token = ");
+//		Trace.Error(t);
+//		if (!FirebaseApp.getApps(this).isEmpty()) {
+//			Trace.Error("oncreate pns 0");
+//			FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//		}
 	}
 	
 	
@@ -137,6 +171,30 @@ public class PushNotificationService extends Extension {
 	}
 	
 	public static String getPushID() {
-		return PNSFirebaseInstanceIDService.getPushID();
+		return "";
+//		return PNSFirebaseInstanceIDService.getPushID(firebaseApp);
+//		Trace.Error("getpushid init");
+//		FirebaseOptions.Builder firebaseBuilder = new FirebaseOptions.Builder();
+//		firebaseBuilder.setApiKey("AIzaSyBXSAK0oBZjuX8JYWxlxP6sm1jG0JMenGo");
+//		firebaseBuilder.setApplicationId("1:60691401087:android:739aed522d2d96b5");
+//		firebaseBuilder.setDatabaseUrl("https://clover-2b677.firebaseio.com");
+//		firebaseBuilder.setGcmSenderId("60691401087");
+//		firebaseBuilder.setStorageBucket("clover-2b677.appspot.com");
+
+//		FirebaseApp.initializeApp(mainContext, firebaseBuilder.build());
+
+//		String token = "new token";
+//		Trace.Error("getpushid pns");
+//		try {
+//			Trace.Error("getpushid pns 1");
+//			token = FirebaseInstanceId.getInstance(firebaseApp).getToken();
+//			Trace.Error("getpushid pns 2");
+////			Trace.Error(token);
+//		} catch (Exception e) {
+//			Trace.Error("getpushid pns 3");
+//			token = "null token";
+//			Trace.Error(e.toString());
+//		}
+//		return token;
 	}
 }

@@ -1,9 +1,12 @@
 package org.haxe.extension;
 
- import android.util.Log;
+// import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.*;
+import org.haxe.extension.extensionkit.Trace;
+import org.haxe.extension.PushNotificationService;
 
 public class PNSFirebaseInstanceIDService extends FirebaseInstanceIdService {
     /**
@@ -15,12 +18,15 @@ public class PNSFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-        String refreshedToken = getPushID();
+//        String refreshedToken = getPushID();
+        String refreshedToken = FirebaseInstanceId.getInstance(PushNotificationService.firebaseApp).getToken();
+        Trace.Error("onrefresh");
+        Trace.Error(refreshedToken.toString());
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(refreshedToken);
+//        sendRegistrationToServer(refreshedToken);
     }
     // [END refresh_token]
 
@@ -36,9 +42,14 @@ public class PNSFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // TODO: Implement this method to send token to app server.
     }
 
-    public static String getPushID() {
-        Log.d("GET_PUSHID_ERROR", "BINGO");
-        String token = FirebaseInstanceId.getInstance().getToken();
-        return "token";
+    public static String getPushID(FirebaseApp firebaseApp) {
+        if (firebaseApp == null) {
+            Trace.Error("firebaseApp IS NULL 222");
+        } else {
+            Trace.Error("firebaseApp IS NOT NULL 222");
+        }
+
+        String token = FirebaseInstanceId.getInstance(firebaseApp).getToken();
+        return token;
     }
 }

@@ -39,10 +39,12 @@ class PushNotificationService {
 				try {
 					trace("getting push id");
 					pushId = pushnotificationservice_getPushID_jni();
+					trace("getting push id done");
 				} catch (e: Dynamic) {
 					trace("Error get push id: " + e.toString());
 				}
 				return pushId;
+//				return pushnotificationservice_getPushID_jni();
 			} else {
 				trace("Error: PushNotificationService doesn't initialized");
 				return "";
