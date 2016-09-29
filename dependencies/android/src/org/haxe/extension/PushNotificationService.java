@@ -13,7 +13,8 @@ import org.haxe.extension.PNSFirebaseInstanceIDService;
 import java.lang.String;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.*;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.haxe.extension.extensionkit.Trace;
 
 
@@ -44,157 +45,77 @@ import org.haxe.extension.extensionkit.Trace;
 	back to Haxe from Java.
 */
 public class PushNotificationService extends Extension {
-	
-	public static FirebaseApp firebaseApp = null;
-	public static int sampleMethod (int inputValue) {
-		
-		return inputValue * 100;
-		
-	}
-	
-	
+	public static FirebaseOptions firebaseOptions = null;
+
 	/**
 	 * Called when an activity you launched exits, giving you the requestCode 
 	 * you started it with, the resultCode it returned, and any additional data 
 	 * from it.
 	 */
 	public boolean onActivityResult (int requestCode, int resultCode, Intent data) {
-		
 		return true;
-		
 	}
-	
-	
+
 	/**
 	 * Called when the activity is starting.
 	 */
-	public void onCreate (Bundle savedInstanceState) {
-		Trace.Error("oncreate pns");
+	public void onCreate (Bundle savedInstanceState) { }
 
-		FirebaseOptions.Builder firebaseBuilder = new FirebaseOptions.Builder();
-		firebaseBuilder.setApiKey("AIzaSyBXSAK0oBZjuX8JYWxlxP6sm1jG0JMenGo");
-		firebaseBuilder.setApplicationId("1:60691401087:android:739aed522d2d96b5");
-		firebaseBuilder.setDatabaseUrl("https://clover-2b677.firebaseio.com");
-		firebaseBuilder.setGcmSenderId("60691401087");
-		firebaseBuilder.setStorageBucket("clover-2b677.appspot.com");
-
-		firebaseApp = FirebaseApp.initializeApp(mainContext, firebaseBuilder.build());
-
-		if (firebaseApp == null) {
-			Trace.Error("firebaseApp IS NULL");
-		} else {
-			Trace.Error("firebaseApp IS NOT NULL");
-		}
-
-		String t = PNSFirebaseInstanceIDService.getPushID(firebaseApp);
-
-		if (t == null) {
-			Trace.Error("token IS NULL");
-		} else {
-			Trace.Error("token IS NOT NULL");
-		}
-
-//		PNSFirebaseInstanceIDService pnsFIIDS = new PNSFirebaseInstanceIDService();
-//		String t = pnsFIIDS.getPushID(firebaseApp).toString();
-//		Trace.Error("token = ");
-//		Trace.Error(t);
-//		if (!FirebaseApp.getApps(this).isEmpty()) {
-//			Trace.Error("oncreate pns 0");
-//			FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//		}
-	}
-	
-	
 	/**
 	 * Perform any final cleanup before an activity is destroyed.
 	 */
-	public void onDestroy () {
-		
-		
-		
-	}
-	
-	
+	public void onDestroy () { }
+
 	/**
 	 * Called as part of the activity lifecycle when an activity is going into
 	 * the background, but has not (yet) been killed.
 	 */
-	public void onPause () {
-		
-		
-		
-	}
-	
-	
+	public void onPause () { }
+
 	/**
 	 * Called after {@link #onStop} when the current activity is being 
 	 * re-displayed to the user (the user has navigated back to it).
 	 */
-	public void onRestart () {
-		
-		
-		
-	}
-	
-	
+	public void onRestart () { }
+
 	/**
 	 * Called after {@link #onRestart}, or {@link #onPause}, for your activity 
 	 * to start interacting with the user.
 	 */
-	public void onResume () {
-		
-		
-		
-	}
-	
+	public void onResume () { }
 	
 	/**
 	 * Called after {@link #onCreate} &mdash; or after {@link #onRestart} when  
 	 * the activity had been stopped, but is now again being displayed to the 
 	 * user.
 	 */
-	public void onStart () {
-		
-		
-		
-	}
-	
-	
+	public void onStart () { }
+
 	/**
 	 * Called when the activity is no longer visible to the user, because 
 	 * another activity has been resumed and is covering this one. 
 	 */
-	public void onStop () {
-		
-		
-		
-	}
+	public void onStop () {	}
 	
 	public static String getPushID() {
-		return "";
-//		return PNSFirebaseInstanceIDService.getPushID(firebaseApp);
-//		Trace.Error("getpushid init");
-//		FirebaseOptions.Builder firebaseBuilder = new FirebaseOptions.Builder();
-//		firebaseBuilder.setApiKey("AIzaSyBXSAK0oBZjuX8JYWxlxP6sm1jG0JMenGo");
-//		firebaseBuilder.setApplicationId("1:60691401087:android:739aed522d2d96b5");
-//		firebaseBuilder.setDatabaseUrl("https://clover-2b677.firebaseio.com");
-//		firebaseBuilder.setGcmSenderId("60691401087");
-//		firebaseBuilder.setStorageBucket("clover-2b677.appspot.com");
+		return PNSFirebaseInstanceIDService.getPushID();
+	}
 
-//		FirebaseApp.initializeApp(mainContext, firebaseBuilder.build());
+	public static void firebaseInit(String apiKey, String appId, String dbUrl, String gcmSenderId, String storageBucket) {
+		Trace.Error("FirebaseApp init start");
 
-//		String token = "new token";
-//		Trace.Error("getpushid pns");
-//		try {
-//			Trace.Error("getpushid pns 1");
-//			token = FirebaseInstanceId.getInstance(firebaseApp).getToken();
-//			Trace.Error("getpushid pns 2");
-////			Trace.Error(token);
-//		} catch (Exception e) {
-//			Trace.Error("getpushid pns 3");
-//			token = "null token";
-//			Trace.Error(e.toString());
-//		}
-//		return token;
+		firebaseOptions = new FirebaseOptions.Builder()
+				.setApiKey(apiKey)
+				.setApplicationId(appId)
+				.setDatabaseUrl(dbUrl)
+				.setGcmSenderId(gcmSenderId)
+				.setStorageBucket(storageBucket)
+				.build();
+
+		FirebaseApp firebaseApp = FirebaseApp.initializeApp(mainContext, firebaseOptions);
+
+		if (firebaseApp == null) {
+			Trace.Error("Error: FirebaseApp init");
+		}
 	}
 }

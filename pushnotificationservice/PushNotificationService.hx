@@ -17,10 +17,13 @@ class PushNotificationService {
 	private static var pushnotificationservice_getPushID_jni : Dynamic;
 	// private static var pushnotificationservice_getPushID : Dynamic; // for iOS
 
+	public static var pushnotificationservice_firebaseInit_jni : Dynamic;
+
 	public static function Initialize() : Void {
 		try {
 			#if android
 				pushnotificationservice_getPushID_jni = JNI.createStaticMethod("org/haxe/extension/PushNotificationService", "getPushID", "()Ljava/lang/String;");
+				pushnotificationservice_firebaseInit_jni = JNI.createStaticMethod("org/haxe/extension/PushNotificationService", "firebaseInit", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 			#end
 			#if cpp
 				// TODO iOS method
@@ -31,26 +34,28 @@ class PushNotificationService {
 
 		ExtensionKit.Initialize();
 	}
-	
+
 	public static function getPushID() {
 		#if android
 			if (pushnotificationservice_getPushID_jni != null) {
-				var pushId = "";
-				try {
-					trace("getting push id");
-					pushId = pushnotificationservice_getPushID_jni();
-					trace("getting push id done");
-				} catch (e: Dynamic) {
-					trace("Error get push id: " + e.toString());
-				}
-				return pushId;
-//				return pushnotificationservice_getPushID_jni();
+				return pushnotificationservice_getPushID_jni();
 			} else {
 				trace("Error: PushNotificationService doesn't initialized");
 				return "";
 			}
 		#elseif (cpp && mobile)
-			return pushnotificationservice_getPushID();
+//			return pushnotificationservice_getPushID();
+		#end
+	}
+
+	public static function messageServerInit(apiKey: String, appId: String, dbUrl: String, gcmSenderId: String, storageBucket: String) {
+		#if android
+				if (pushnotificationservice_firebaseInit_jni != null) {
+					pushnotificationservice_firebaseInit_jni(apiKey, appId, dbUrl, gcmSenderId, storageBucket);
+				} else {
+					trace("Error: PushNotificationService doesn't initialized");
+				}
+		#elseif (cpp && mobile)
 		#end
 	}
 }
