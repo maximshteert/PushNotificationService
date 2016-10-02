@@ -50,12 +50,20 @@ class PushNotificationService {
 
 	public static function messageServerInit(apiKey: String, appId: String, dbUrl: String, gcmSenderId: String, storageBucket: String) {
 		#if android
-				if (pushnotificationservice_firebaseInit_jni != null) {
-					pushnotificationservice_firebaseInit_jni(apiKey, appId, dbUrl, gcmSenderId, storageBucket);
+				if (isEmpty(apiKey) || isEmpty(appId) || isEmpty(dbUrl) || isEmpty(gcmSenderId) || isEmpty(storageBucket)) {
+					trace("Error: Incorrent firebase init parameters");
 				} else {
-					trace("Error: PushNotificationService doesn't initialized");
+					if (pushnotificationservice_firebaseInit_jni != null) {
+						pushnotificationservice_firebaseInit_jni(apiKey, appId, dbUrl, gcmSenderId, storageBucket);
+					} else {
+						trace("Error: PushNotificationService doesn't initialized");
+					}
 				}
 		#elseif (cpp && mobile)
 		#end
+	}
+
+	private static function isEmpty(v: String) : Bool {
+		return v == "" || v == null;
 	}
 }
