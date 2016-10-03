@@ -35,6 +35,14 @@ public class PNSFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Trace.Error("Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+            HaxeCallback.DispatchEventToHaxe("pushnotificationservice.PushNotificationServiceEvent",
+                new Object[]{
+                    "message_received",
+                    getPushID(),
+                    remoteMessage.getNotification().getBody()
+                }
+            );
         }
     }
 }
