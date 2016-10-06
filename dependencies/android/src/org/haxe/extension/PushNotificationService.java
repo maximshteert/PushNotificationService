@@ -83,7 +83,7 @@ public class PushNotificationService extends Extension {
 	 * to start interacting with the user.
 	 */
 	public void onResume () { }
-	
+
 	/**
 	 * Called after {@link #onCreate} &mdash; or after {@link #onRestart} when  
 	 * the activity had been stopped, but is now again being displayed to the 
@@ -96,7 +96,7 @@ public class PushNotificationService extends Extension {
 	 * another activity has been resumed and is covering this one. 
 	 */
 	public void onStop () {	}
-	
+
 	public static String getPushID() {
 		return PNSFirebaseInstanceIDService.getPushID();
 	}

@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.haxe.extension.extensionkit.Trace;
+import org.haxe.extension.extensionkit.HaxeCallback;
 
 public class PNSFirebaseMessagingService extends FirebaseMessagingService {
     /**
@@ -39,7 +40,7 @@ public class PNSFirebaseMessagingService extends FirebaseMessagingService {
             HaxeCallback.DispatchEventToHaxe("pushnotificationservice.PushNotificationServiceEvent",
                 new Object[]{
                     "message_received",
-                    getPushID(),
+                    "",
                     remoteMessage.getNotification().getBody()
                 }
             );
